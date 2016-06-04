@@ -1,0 +1,59 @@
+
+<!DOCTYPE HTML PUBLIC "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ru" ng-app="app" ng-strict-di xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <noscript><meta http-equiv="refresh" content="0;URL=/NoJavaScript.html" /></noscript>
+    <link rel="stylesheet"  href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <title>bitly =)</title>
+    <!--<base href="/">-->
+
+
+</head>
+<body>
+
+<div class="container-fluid" ng-controller="mainController">
+    <form name="form">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div class="input-group">
+
+                <input type="url" name="origin" ng-model="origin" required class="form-control" placeholder="Paste a link to shorten it">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="shorten(form)" type="button">Shorten</button>
+                  </span>
+            </div>
+
+            {{form.origin.$error}}
+            <div ng-messages="form.$dirty && form.origin.$error" style="color:red" role="alert">
+                <div ng-message="required">An error occurred shortening that link.</div>
+                <div ng-message="url">Unable to shorten that link. It is not a valid url.</div>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div>
+
+
+    </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-messages/angular-messages.js"></script>
+<script type="text/javascript" src="app/module.js"></script>
+
+
+</body>
+
+
+
+</html>

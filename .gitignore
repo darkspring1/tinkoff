@@ -1,0 +1,6 @@
+*bin/
+*obj/
+*packages/
+*bower_components
+node_modules
+.idea
