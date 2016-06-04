@@ -27,8 +27,6 @@ namespace Api
             Logger.Debug("Start configuration");
 
             var config = new HttpConfiguration();
-
-            EnableCrossSiteRequests(app, config);
             
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
@@ -38,9 +36,7 @@ namespace Api
 
             config.Services.Add(typeof(IExceptionLogger), new NLogExceptionLogger());
             config.Services.Replace(typeof(IHttpControllerActivator), new StructureMapWebApiControllerActivator(Container));
-
             
-
             //configuration.Routes.MapHttpRoute("api", "api/{controller}/{action}");
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
@@ -62,17 +58,6 @@ namespace Api
                 
 
             Logger.Debug("Configuration finished");
-        }
-
-
-        void EnableCrossSiteRequests(IAppBuilder app, HttpConfiguration config)
-        {
-            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
-            //var cors = new EnableCorsAttribute(
-            //    origins: "*",
-            //    headers: "*",
-            //    methods: "*");
-            //config.EnableCors(cors);
         }
     }
 }

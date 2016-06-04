@@ -1,4 +1,5 @@
-﻿using Dal;
+﻿using Business.Dal;
+using Dal;
 using StructureMap;
 
 namespace Api.Ioc
@@ -10,7 +11,9 @@ namespace Api.Ioc
             For<DataContext>()
                 .Use<DataContext>()
                 .Ctor<string>("connectionString")
-                .Is("safetyButton");
+                .Is("bitly");
+
+            For(typeof(IRepository<>)).Use(typeof(EfRepository<>));
         }
     }
 }

@@ -4,19 +4,16 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using Business.Dal;
-using Dal;
-using Sb.Business.Dal;
 
-namespace Sb.Dal
+namespace Dal
 {
-    class EFRepository<T> : IRepository<T> where T : class
+    public class EfRepository<T> : IRepository<T> where T : class
     {
+        readonly DbSet<T> _set;
 
-        DbSet<T> _set;
+        readonly DataContext _context;
 
-        DataContext _context;
-
-        public EFRepository(DataContext context)
+        public EfRepository(DataContext context)
         {
             _set = context.Set<T>();
             _context = context;

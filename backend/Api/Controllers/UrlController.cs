@@ -18,6 +18,12 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        public IHttpActionResult Get()
+        {
+            return Ok();
+        }
+
+        [HttpPost]
         public IHttpActionResult Post(string origin)
         {
             return Ok(_callService.Create(origin));
