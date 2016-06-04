@@ -47,8 +47,9 @@ namespace Api
 
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
-            app.UseLogger();
             app
+                .UseLogger()
+                .UseTraffic()
                 .UseWebApi(config)
                 .Use((c, next) =>
                 {

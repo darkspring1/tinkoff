@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Api.Models;
 using Business.Services;
 
 namespace Api.Controllers
@@ -17,16 +18,15 @@ namespace Api.Controllers
             _callService = callService;
         }
 
-        [HttpGet]
-        public IHttpActionResult Get()
-        {
-            return Ok();
-        }
-
         [HttpPost]
-        public IHttpActionResult Post(string origin)
+        public IHttpActionResult Post([FromBody]UrlPostModel model)
         {
-            return Ok(_callService.Create(origin));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(_callService.GetOrCreate(model.OriginUrl, Settings.ShortUrlPart));
         }
         
     }

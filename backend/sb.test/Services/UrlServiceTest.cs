@@ -15,15 +15,16 @@ namespace Test.Services
         [TestMethod]
         public void GetByPathTest()
         {
-            const string path = "randomString";
+            const string shortUrlPart = "http://shortUrl/";
+            const string shortUrl = shortUrlPart + "randomString";
             const string origin = "https://bitly.com";
             IRepository<Url> repository = new TestRepository<Url>(new List<Url>
             {
-                new Url { Origin = origin, Path = path }
+                new Url { OriginUrl = origin, ShortUrl = shortUrl }
             });
             UrlService service = new UrlService(repository, new RandomStringGenerator());
-            var url = service.GetByPath(path).First();
-            Assert.AreEqual(url.Origin, origin);
+            var url = service.GetByShortUrl(shortUrl).First();
+            Assert.AreEqual(url.OriginUrl, origin);
         }
     }
 }

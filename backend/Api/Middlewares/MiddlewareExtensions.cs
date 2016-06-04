@@ -8,6 +8,11 @@ namespace Api.Middlewares
         {
             return app.Use<NLogMiddleware>();
         }
-        
+
+        public static IAppBuilder UseTraffic(this IAppBuilder app)
+        {
+            return app.Use<TrafficMiddleware>();
+        }
+
     }
 }

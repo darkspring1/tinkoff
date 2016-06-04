@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Dal;
@@ -20,22 +21,22 @@ namespace Business.Services
         }
 
 
-        private Url GetExisting(string origin)
+        private Url[] GetExisting(string origin)
         {
             return _urlRepository
-                .Where(url => url.Origin == origin)
-                .FirstOrDefault();
+                .Where(url => url.OriginUrl == origin).ToArray();
         }
 
 
-        public Url Create(string origin)
+        public IEnumerable<Url> GetOrCreate(string origin, string shortUrlPart)
         {
             origin = origin.TrimEnd('/');
-            Url url = GetExisting(origin);
-            if (url == null)
+            var urls = GetExisting(origin);
+            if (!urls.Any())
             {
                 var length = PathLength;
                 bool fail = true;
+                Url url = null;
                 while (fail)
                 {
                     try
@@ -44,25 +45,27 @@ namespace Business.Services
                         {
                             Id = Guid.NewGuid(),
                             CreatedAt = DateTime.UtcNow,
-                            Path = _stringGenerator.GetString(length),
-                            Origin = origin
+                            ShortUrl =  shortUrlPart + _stringGenerator.GetString(length),
+                            OriginUrl = origin
                         };
                         _urlRepository.Add(url);
+                        _urlRepository.SaveChanges();
                         fail = false;
                     }
                     catch (Exception exc)
                     {
                         length++;
-                        //обрабатываем ситуацию, когда сгенерили не уникальный path
+                        //обрабатываем ситуацию, когда сгенерили не уникальный shortUrl
                     }
                 }
+                urls = new[] {url};
             }
-            return url;
+            return urls;
         }
 
-        public IEnumerable<Url> GetByPath(string path)
+        public IEnumerable<Url> GetByShortUrl(string shortUrl)
         {
-            return _urlRepository.Where(url => url.Path == path);
+            return _urlRepository.Where(url => url.ShortUrl == shortUrl).ToArray();
         }
     }
 }

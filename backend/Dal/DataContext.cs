@@ -5,7 +5,7 @@ namespace Dal
 {
     public class DataContext : DbContext
     {
-        const string schema = "public";
+        const string Schema = "dbo";
 
         public DataContext(string connectionString) : base(connectionString)
         {
@@ -18,7 +18,7 @@ namespace Dal
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Url>().ToTable("Urls", schema);
+            modelBuilder.Entity<Url>().ToTable("Urls", Schema);
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

@@ -61,7 +61,9 @@
     <Compile Include="Middlewares\MiddlewareExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Middlewares\TrafficMiddleware.cs" />
     <Compile Include="Middlewares\NLogMiddleware.cs" />
+    <Compile Include="Models\UrlPostModel.cs" />
     <Compile Include="NLogExceptionLogger.cs" />
     <Compile Include="Ioc\ApiRegister.cs" />
     <Compile Include="Program.cs" />
@@ -164,9 +166,7 @@
       <Name>Dal</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

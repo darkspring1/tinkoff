@@ -18,15 +18,15 @@ function proxy(req, res){
     apiProxy.web(req, res, { target: 'http://localhost:' + apiPort });
 }
 
-app.use(express.static(__dirname + '/'));  
+app.use(express.static(__dirname + '/'));
 
-
+app.get("/*", proxy);
 app.post("/api*", proxy);
 app.get("/api*", proxy);
 app.put("/api*", proxy);
 
 
-app.get('/*', function(req, res) {
+app.get('/demo', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 

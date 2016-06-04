@@ -81,7 +81,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Controllers\CallControllerTest.cs" />
+    <Compile Include="Controllers\UrlControllerTest.cs" />
     <Compile Include="Dal\TestRepository.cs" />
     <Compile Include="Ioc\TestRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

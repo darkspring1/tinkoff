@@ -4,23 +4,23 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Api.Controllers;
+using Api.Models;
 using Business;
 using Business.Dal;
 using Business.Entities;
 using Business.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StructureMap;
 using Test.Dal;
 
 namespace Test.controllers
 {
     [TestClass]
-    public class CallControllerTest
+    public class UrlControllerTest
     {
 
-        private Url GetUrlFromActionResult(IHttpActionResult result)
+        private IEnumerable<Url> GetUrlFromActionResult(IHttpActionResult result)
         {
-            return ((OkNegotiatedContentResult<Url>) result).Content;
+            return ((OkNegotiatedContentResult<IEnumerable<Url>>) result).Content;
         }
 
         [TestMethod]
@@ -29,25 +29,26 @@ namespace Test.controllers
             IRepository<Url> repository = new TestRepository<Url>(Enumerable.Empty<Url>());
             UrlService service = new UrlService(repository, new RandomStringGenerator());
             UrlController ctrl = new UrlController(service);
-            var result = ctrl.Post("https://bitly.com/");
-            var url = GetUrlFromActionResult(result);
-            Assert.IsNotNull(url);
+            var result = ctrl.Post(new UrlPostModel { OriginUrl = "https://bitly.com/" });
+            var urls = GetUrlFromActionResult(result);
+            Assert.IsTrue(urls.Count() == 1);
         }
 
         [TestMethod]
         public void PostTest_alreadyExist()
         {
-            const string path = "randomString";
+            const string shortUrlPart = "http://shortUrl/";
+            const string shortUrl = shortUrlPart + "randomString";
             IRepository<Url> repository = new TestRepository<Url>(new List<Url>
             {
-                new Url { Origin = "https://bitly.com", Path = path }
+                new Url { OriginUrl = "https://bitly.com", ShortUrl = shortUrl }
             });
 
             UrlService service = new UrlService(repository, new RandomStringGenerator());
             UrlController ctrl = new UrlController(service);
-            var result = ctrl.Post("https://bitly.com/");
-            var url = GetUrlFromActionResult(result);
-            Assert.AreEqual(url.Path, path);
+            var result = ctrl.Post(new UrlPostModel { OriginUrl = "https://bitly.com/" });
+            var urls = GetUrlFromActionResult(result);
+            Assert.AreEqual(urls.First().ShortUrl, shortUrl);
         }
     }
 }
