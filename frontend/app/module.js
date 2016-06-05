@@ -6,13 +6,12 @@
 angular.module('app', [ 'ngMessages', 'ngResource' ])
 .controller('mainController', ['$scope', '$resource', '$log', function($scope, $resource, $log){
 
-
     var url = $resource('/api/url', null, {
         create: {method:'POST', isArray: true }
     });
-
-    //$scope.origin = "http://cribcy.com";
+    
     $scope.shorten = function(form) {
+        form.$setSubmitted();
         if(form.$valid){
             $scope.loading = true;
             $scope.urls = url.create({ originUrl: $scope.origin });
@@ -22,9 +21,5 @@ angular.module('app', [ 'ngMessages', 'ngResource' ])
                     $scope.loading = false;
                 })
         }
-        else {
-            form.$setDirty()
-        }
     }
-
 }])
