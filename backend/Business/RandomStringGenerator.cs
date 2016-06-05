@@ -7,6 +7,7 @@ namespace Business
     {
         private const int N = 62;
         private readonly byte[] _codes = new byte[N];
+        readonly Random _rnd = new Random();
         public RandomStringGenerator()
         {
             byte i = 0;
@@ -30,12 +31,11 @@ namespace Business
 
         public string GetString(int length)
         {
-            Random rnd = new Random();
             var bytes = new byte[length];
 
             for (int i = 0; i < length; i++)
             {
-                bytes[i] = _codes[rnd.Next(N)];
+                bytes[i] = _codes[_rnd.Next(N)];
             }
 
             return Encoding.UTF8.GetString(bytes);

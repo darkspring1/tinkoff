@@ -27,45 +27,60 @@ namespace Business.Services
                 .Where(url => url.OriginUrl == origin).ToArray();
         }
 
+        private Url Create(string shortUrl, string originUrl)
+        {
+            var url = new Url
+            {
+                Id = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
+                ShortUrl = shortUrl,
+                OriginUrl = originUrl
+            };
+            _urlRepository.Add(url);
+            _urlRepository.SaveChanges();
+            return url;
+        }
+
 
         public IEnumerable<Url> GetOrCreate(string origin, string shortUrlPart)
         {
             origin = origin.TrimEnd('/');
-            var urls = GetExisting(origin);
-            if (!urls.Any())
+            const int maxFails = 2;
+            var length = PathLength;
+            for (var fails = 0; fails <= maxFails; fails++)
             {
-                var length = PathLength;
-                bool fail = true;
-                Url url = null;
-                while (fail)
+                var urls = GetExisting(origin);
+                if (urls.Any())
                 {
-                    try
-                    {
-                        url = new Url
-                        {
-                            Id = Guid.NewGuid(),
-                            CreatedAt = DateTime.UtcNow,
-                            ShortUrl =  shortUrlPart + _stringGenerator.GetString(length),
-                            OriginUrl = origin
-                        };
-                        _urlRepository.Add(url);
-                        _urlRepository.SaveChanges();
-                        fail = false;
-                    }
-                    catch (Exception exc)
-                    {
-                        length++;
-                        //обрабатываем ситуацию, когда сгенерили не уникальный shortUrl
-                    }
+                    return urls;
                 }
-                urls = new[] {url};
+                try
+                {
+                    var url = Create(shortUrlPart + "/" + _stringGenerator.GetString(length), origin);
+                    return new[] { url };
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+                {
+                    //обрабатываем ситуацию, когда сгенерили не уникальный shortUrl
+                    //или пытаемся добавить запись для уже существующего originUrl'а
+                    //моё предположение, что это будет проиходить редко,
+                    //поэтому решил обойтись без lock, и дополнительных проверок
+                    length++;   
+                }
             }
-            return urls;
+            return Enumerable.Empty<Url>();
         }
 
-        public IEnumerable<Url> GetByShortUrl(string shortUrl)
+        public Url AddTraffic(string shortUrl)
         {
-            return _urlRepository.Where(url => url.ShortUrl == shortUrl).ToArray();
+            var result = _urlRepository.Where(url => url.ShortUrl == shortUrl).FirstOrDefault();
+            if (result != null)
+            {
+                result.Traffic++;
+                _urlRepository.SaveChanges();
+            }
+
+            return result;
         }
     }
 }

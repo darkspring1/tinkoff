@@ -11,6 +11,10 @@ namespace Test.Dal
         readonly IQueryable<T> _set;
         public TestRepository(IEnumerable<T> set)
         {
+            if (!set.Any())
+            {
+                set = DataContext.GetData<T>();
+            }
             _set = set.AsQueryable<T>();
         }
 

@@ -49,7 +49,7 @@ namespace Api
 
             app
                 .UseLogger()
-                .UseTraffic()
+                .UseTraffic(Container)
                 .UseWebApi(config)
                 .Use((c, next) =>
                 {

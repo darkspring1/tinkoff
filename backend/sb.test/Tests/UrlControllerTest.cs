@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Api;
 using Api.Controllers;
 using Api.Models;
 using Business;
@@ -12,7 +13,7 @@ using Business.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Dal;
 
-namespace Test.controllers
+namespace Test.Tests
 {
     [TestClass]
     public class UrlControllerTest
@@ -37,8 +38,7 @@ namespace Test.controllers
         [TestMethod]
         public void PostTest_alreadyExist()
         {
-            const string shortUrlPart = "http://shortUrl/";
-            const string shortUrl = shortUrlPart + "randomString";
+            string shortUrl = Settings.GetShortUrl("randomString");
             IRepository<Url> repository = new TestRepository<Url>(new List<Url>
             {
                 new Url { OriginUrl = "https://bitly.com", ShortUrl = shortUrl }

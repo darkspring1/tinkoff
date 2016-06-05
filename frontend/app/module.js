@@ -11,7 +11,7 @@ angular.module('app', [ 'ngMessages', 'ngResource' ])
         create: {method:'POST', isArray: true }
     });
 
-    $scope.origin = "http://cribcy.com";
+    //$scope.origin = "http://cribcy.com";
     $scope.shorten = function(form) {
         if(form.$valid){
             $scope.loading = true;

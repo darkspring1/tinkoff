@@ -1,4 +1,5 @@
 ﻿using Owin;
+using StructureMap;
 
 namespace Api.Middlewares
 {
@@ -9,10 +10,6 @@ namespace Api.Middlewares
             return app.Use<NLogMiddleware>();
         }
 
-        public static IAppBuilder UseTraffic(this IAppBuilder app)
-        {
-            return app.Use<TrafficMiddleware>();
-        }
-
+        public static IAppBuilder UseTraffic(this IAppBuilder app, Container container) => app.Use(typeof(TrafficMiddleware), container);
     }
 }

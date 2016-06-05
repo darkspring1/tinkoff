@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace sb.test.dal
+
+namespace Test.Dal
 {
     class DataContext
     {
-        static Dictionary<string, object> _data = new Dictionary<string, object>();
+        static readonly Dictionary<string, object> Data = new Dictionary<string, object>();
 
         static string GetKey(Type t)
         {
@@ -19,7 +20,7 @@ namespace sb.test.dal
 
             object result = null;
 
-            if (_data.TryGetValue(key, out result))
+            if (Data.TryGetValue(key, out result))
             {
                 return (IEnumerable<T>)result;
             }
@@ -30,12 +31,12 @@ namespace sb.test.dal
         public static void AddData<T>(IEnumerable<T> data)
         {
             var key = GetKey(typeof(T));
-            _data.Add(key, data);
+            Data.Add(key, data);
         }
 
         public static void Clear()
         {
-            _data.Clear();
+            Data.Clear();
         }
     }
 }

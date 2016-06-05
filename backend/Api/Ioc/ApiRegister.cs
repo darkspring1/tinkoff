@@ -1,4 +1,5 @@
-﻿using Business.Dal;
+﻿using Business;
+using Business.Dal;
 using Dal;
 using StructureMap;
 
@@ -12,6 +13,10 @@ namespace Api.Ioc
                 .Use<DataContext>()
                 .Ctor<string>("connectionString")
                 .Is("bitly");
+
+            For<RandomStringGenerator>()
+                .Use<RandomStringGenerator>()
+                .Singleton();
 
             For(typeof(IRepository<>)).Use(typeof(EfRepository<>));
         }
