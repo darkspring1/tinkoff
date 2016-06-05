@@ -9,7 +9,7 @@ angular.module('app', [ 'ngMessages', 'ngResource' ])
     var url = $resource('/api/url', null, {
         create: {method:'POST', isArray: true }
     });
-    
+
     $scope.shorten = function(form) {
         form.$setSubmitted();
         if(form.$valid){
