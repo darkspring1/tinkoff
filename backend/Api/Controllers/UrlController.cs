@@ -28,6 +28,12 @@ namespace Api.Controllers
 
             return Ok(_callService.GetOrCreate(model.OriginUrl, Settings.ShortUrlPart));
         }
-        
+
+
+        [HttpGet]
+        public IHttpActionResult Get([FromUri]Guid id)
+        {
+            return Ok(_callService.GetById(id));
+        }
     }
 }

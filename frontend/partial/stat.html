@@ -1,0 +1,21 @@
+<div ng-show="!url.$resolved">
+    loading...
+</div>
+
+<div ng-show="url.$resolved">
+<h2 ng-bind="url.originUrl"></h2>
+<ul class="list-group" >
+    <li class="list-group-item">
+        <h4 class="list-group-item-heading" >
+            <a href="{{url.shortUrl}}" target="_blank" ng-bind="url.shortUrl"></a>
+        </h4>
+
+        <span class="badge" ng-bind="url.traffic"></span>
+
+        <p class="list-group-item-text">
+            created: {{url.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}
+        </p>
+
+    </li>
+</ul>
+</div>

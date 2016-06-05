@@ -2,24 +2,37 @@
  * Created by darkspring on 04/06/2016.
  */
 
+angular.module('app', [ 'ngMessages', 'ngResource', 'ui.router' ])
+    .config(['$httpProvider', '$locationProvider', '$urlRouterProvider', '$stateProvider',
+        function ($httpProvider, $locationProvider, $urlRouterProvider, $stateProvider) {
 
-angular.module('app', [ 'ngMessages', 'ngResource' ])
-.controller('mainController', ['$scope', '$resource', '$log', function($scope, $resource, $log){
+            $locationProvider.html5Mode(true);
+            $urlRouterProvider.otherwise('/');
 
-    var url = $resource('/api/url', null, {
-        create: {method:'POST', isArray: true }
-    });
-
-    $scope.shorten = function(form) {
-        form.$setSubmitted();
-        if(form.$valid){
-            $scope.loading = true;
-            $scope.urls = url.create({ originUrl: $scope.origin });
-            $scope.urls.$promise
-                .catch($log.error)
-                .finally(function(){
-                    $scope.loading = false;
+            $stateProvider
+                .state('main', {
+                    url: '/',
+                    templateUrl: 'partial/main.html',
+                    controller: 'mainController'
                 })
+                .state('stat', {
+                    url: '/stat/:id',
+                    templateUrl: 'partial/stat.html',
+                    controller: 'statController'
+                })
+
+        }])
+
+    .controller('mainController', ['$scope', '$resource', '$log', 'api', function($scope, $resource, $log, api){
+        $scope.shorten = function(form) {
+            form.$setSubmitted();
+            if(form.$valid){
+                $scope.urls = api.create({ originUrl: $scope.origin });
+                $scope.urls.$promise.catch($log.error);
+            }
         }
-    }
-}])
+    }])
+
+    .controller('statController', ['$scope', 'api', '$log', '$stateParams', function($scope, api, $log, $stateParams){
+        $scope.url = api.get({ id: $stateParams.id });
+    }])

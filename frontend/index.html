@@ -5,15 +5,12 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <noscript><meta http-equiv="refresh" content="0;URL=/NoJavaScript.html" /></noscript>
+    <base href="/" target="_blank">
     <!-- build:css bundle.css -->
     <link rel="stylesheet"  href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbuild -->
 
     <title>bitly =)</title>
-
-
-
 </head>
 <body>
 
@@ -23,43 +20,14 @@
     }
 </style>
 
-<div ng-cloak="" class="container-fluid" ng-controller="mainController">
-    <form name="form">
-    <div class="row">
-        <div class="col-md-offset-3 col-md-6">
-            <div class="input-group">
-                <input type="url" name="origin" ng-model="origin" required class="form-control" placeholder="Paste a link to shorten it">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="shorten(form)" type="button">Shorten</button>
-                  </span>
-            </div>
-            <div ng-messages="form.$submitted && form.origin.$error" style="color:red" role="alert">
-                <div ng-message="required">An error occurred shortening that link.</div>
-                <div ng-message="url">Unable to shorten that link. It is not a valid url.</div>
-            </div>
+<div ng-cloak="" class="container-fluid" >
 
-            <div ng-show="loading">
-                loading...
-            </div>
+    <div ng-form="form" class="row">
+        <div class="col-md-offset-3 col-md-6" ui-view="">
 
-            <ul class="list-group" ng-show="!loading && urls.length > 0">
-                <li class="list-group-item" ng-repeat="url in urls">
-                    <h4 class="list-group-item-heading" >
-                        <a href="{{url.shortUrl}}" ng-bind="url.shortUrl"></a>
-                    </h4>
-
-                    <span class="badge">{{url.traffic}}</span>
-
-                    <p class="list-group-item-text">
-                        created: {{url.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}
-                    </p>
-                </li>
-            </ul>
         </div>
-
-
     </div>
-    </form>
+
 </div>
 
 <!-- build:js bundle.js -->
@@ -67,11 +35,13 @@
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="bower_components/angular-messages/angular-messages.js"></script>
 <script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script type="text/javascript" src="app/module.js"></script>
+
+<script type="text/javascript" src="app/api.js"></script>
 <!-- endbuild -->
 
 </body>
-
 
 
 </html>

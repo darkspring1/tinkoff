@@ -20,16 +20,13 @@ function proxy(req, res){
 
 app.use(express.static(__dirname + '/'));
 
-app.get("/*", proxy);
 app.post("/api*", proxy);
 app.get("/api*", proxy);
 app.put("/api*", proxy);
 
-
-app.get('/demo', function(req, res) {
+app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
-
 
 app.listen(port);
 

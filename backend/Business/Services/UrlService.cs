@@ -42,6 +42,11 @@ namespace Business.Services
         }
 
 
+        public Url GetById(Guid id)
+        {
+            return _urlRepository.GetById(id);
+        }
+
         public IEnumerable<Url> GetOrCreate(string origin, string shortUrlPart)
         {
             origin = origin.TrimEnd('/');

@@ -1,0 +1,32 @@
+<form name="form">
+        <div class="input-group">
+            <input type="url" name="origin" ng-model="origin" required class="form-control" placeholder="Paste a link to shorten it">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="shorten(form)" type="button">Shorten</button>
+                  </span>
+        </div>
+        <div ng-messages="form.$submitted && form.origin.$error" style="color:red" role="alert">
+            <div ng-message="required">An error occurred shortening that link.</div>
+            <div ng-message="url">Unable to shorten that link. It is not a valid url.</div>
+        </div>
+
+        <div ng-show="urls && !urls.$resolved">
+            loading...
+        </div>
+
+        <ul class="list-group" ng-show="urls.$resolved && urls.length > 0">
+            <li class="list-group-item" ng-repeat="url in urls">
+                <h4 class="list-group-item-heading" >
+                    <a href="{{url.shortUrl}}" ng-bind="url.shortUrl"></a>
+                </h4>
+
+                <span class="badge">{{url.traffic}}</span>
+
+                <p class="list-group-item-text">
+                    created: {{url.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}
+                </p>
+
+                <a ui-sref="stat({ id: url.id })">statistics</a>
+            </li>
+        </ul>
+</form>
